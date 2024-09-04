@@ -1,10 +1,8 @@
-import { DynamoDB } from "@aws-sdk/client-dynamodb";
+const { db } = require("../dynamodb");
 
-const region = "eu-north-1";
-
-const client = new DynamoDB({ region });
-
-export const handler = async (event) => {
+exports.handler = async (event, context) => {
+  try {
+  } catch (error) {}
   const params = {
     TableName: "Event",
   };

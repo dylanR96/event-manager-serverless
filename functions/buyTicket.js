@@ -1,13 +1,17 @@
-import { events } from "../events/events.js";
+const { db } = require("../dynamodb");
 
-export const handler = async (event) => {
-  const { id } = event.pathParameters;
+exports.handler = async (event, context) => {
+  const { id } = JSON.parse(event.body);
+  try {
+  } catch (error) {}
+  const params = {
+    TableName: "Event",
+  };
 
-  const foundEvent = events.find((event) => event.id === parseInt(id));
-
+  const events = await client.scan(params);
   const response = {
     statusCode: 200,
-    body: JSON.stringify({ foundEvent }),
+    body: JSON.stringify({ events }),
   };
   return response;
 };
