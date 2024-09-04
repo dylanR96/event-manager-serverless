@@ -116,7 +116,7 @@
                   "S3Bucket": {
                     "Ref": "ServerlessDeploymentBucket"
                   },
-                  "S3Key": "serverless/event-manager/dev/1724922781144-2024-08-29T09:13:01.144Z/event-manager.zip"
+                  "S3Key": "serverless/event-manager/dev/1725441002059-2024-09-04T09:10:02.059Z/event-manager.zip"
                 },
                 "Handler": "functions/getEvents.handler",
                 "Runtime": "nodejs20.x",
@@ -136,7 +136,7 @@
                   "S3Bucket": {
                     "Ref": "ServerlessDeploymentBucket"
                   },
-                  "S3Key": "serverless/event-manager/dev/1724922781144-2024-08-29T09:13:01.144Z/event-manager.zip"
+                  "S3Key": "serverless/event-manager/dev/1725441002059-2024-09-04T09:10:02.059Z/event-manager.zip"
                 },
                 "Handler": "functions/buyTicket.handler",
                 "Runtime": "nodejs20.x",
@@ -149,24 +149,24 @@
                 "BuyEventLogGroup"
               ]
             },
-            "GetEventsLambdaVersion9nhB97wANQDgXpjuPvNMCbGgJ7nhjLt4MtSgrhnKFQ": {
+            "GetEventsLambdaVersion0ytRP7MjbVAxClGBxLKBW6FPSFgcfWvHpW9pLbk": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "GetEventsLambdaFunction"
                 },
-                "CodeSha256": "j+T6WPyR74tRnCpar6/OzqWEAiuv4L3Uhc4z8NCbYSU="
+                "CodeSha256": "dPS6+wL83duwGgok2YSODBJY9qmZA7+1I3wqwfvjrJ0="
               }
             },
-            "BuyEventLambdaVersionYQPCljG2n2CaW3tMKZ8N3LsshJrA7s5ghSejiCrVikQ": {
+            "BuyEventLambdaVersionDMYeD2kgrItuNwM8GM45RUrmOsOkm7L75P2TDg6O0": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "BuyEventLambdaFunction"
                 },
-                "CodeSha256": "j+T6WPyR74tRnCpar6/OzqWEAiuv4L3Uhc4z8NCbYSU="
+                "CodeSha256": "dPS6+wL83duwGgok2YSODBJY9qmZA7+1I3wqwfvjrJ0="
               }
             },
             "HttpApi": {
@@ -338,6 +338,25 @@
                 }
               },
               "DependsOn": "HttpApiIntegrationBuyEvent"
+            },
+            "eventsDb": {
+              "Type": "AWS::DynamoDB::Table",
+              "Properties": {
+                "TableName": "Event",
+                "AttributeDefinitions": [
+                  {
+                    "AttributeName": "id",
+                    "AttributeType": "S"
+                  }
+                ],
+                "KeySchema": [
+                  {
+                    "AttributeName": "id",
+                    "KeyType": "HASH"
+                  }
+                ],
+                "BillingMode": "PAY_PER_REQUEST"
+              }
             }
           },
           "Outputs": {
@@ -352,7 +371,7 @@
             "GetEventsLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "GetEventsLambdaVersion9nhB97wANQDgXpjuPvNMCbGgJ7nhjLt4MtSgrhnKFQ"
+                "Ref": "GetEventsLambdaVersion0ytRP7MjbVAxClGBxLKBW6FPSFgcfWvHpW9pLbk"
               },
               "Export": {
                 "Name": "sls-event-manager-dev-GetEventsLambdaFunctionQualifiedArn"
@@ -361,7 +380,7 @@
             "BuyEventLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "BuyEventLambdaVersionYQPCljG2n2CaW3tMKZ8N3LsshJrA7s5ghSejiCrVikQ"
+                "Ref": "BuyEventLambdaVersionDMYeD2kgrItuNwM8GM45RUrmOsOkm7L75P2TDg6O0"
               },
               "Export": {
                 "Name": "sls-event-manager-dev-BuyEventLambdaFunctionQualifiedArn"
@@ -506,7 +525,7 @@
           "timeout": 6,
           "runtime": "nodejs20.x",
           "vpc": {},
-          "versionLogicalId": "GetEventsLambdaVersion9nhB97wANQDgXpjuPvNMCbGgJ7nhjLt4MtSgrhnKFQ"
+          "versionLogicalId": "GetEventsLambdaVersion0ytRP7MjbVAxClGBxLKBW6FPSFgcfWvHpW9pLbk"
         },
         "buyEvent": {
           "handler": "functions/buyTicket.handler",
@@ -526,11 +545,35 @@
           "timeout": 6,
           "runtime": "nodejs20.x",
           "vpc": {},
-          "versionLogicalId": "BuyEventLambdaVersionYQPCljG2n2CaW3tMKZ8N3LsshJrA7s5ghSejiCrVikQ"
+          "versionLogicalId": "BuyEventLambdaVersionDMYeD2kgrItuNwM8GM45RUrmOsOkm7L75P2TDg6O0"
         }
+      },
+      "resources": {
+        "Resources": {
+          "eventsDb": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+              "TableName": "Event",
+              "AttributeDefinitions": [
+                {
+                  "AttributeName": "id",
+                  "AttributeType": "S"
+                }
+              ],
+              "KeySchema": [
+                {
+                  "AttributeName": "id",
+                  "KeyType": "HASH"
+                }
+              ],
+              "BillingMode": "PAY_PER_REQUEST"
+            }
+          }
+        },
+        "Outputs": {}
       }
     },
-    "serviceRawFile": "# \"org\" ensures this Service is used with the correct Serverless Framework Access Key.\norg: dylanr96\n# \"app\" enables Serverless Framework Dashboard features and sharing them with other Services.\napp: event-manager\n# \"service\" is the name of this project. This will also be added to your AWS resource names.\nservice: event-manager\n\nprovider:\n  name: aws\n  runtime: nodejs20.x\n  region: eu-north-1\n  iam:\n    role: arn:aws:iam::992382623759:role/studies-role\n\nfunctions:\n  getEvents:\n    handler: functions/getEvents.handler\n    events:\n      - httpApi:\n          path: \"/events\"\n          method: GET\n  buyEvent:\n    handler: functions/buyTicket.handler\n    events:\n      - httpApi:\n          path: \"/events/{id}\"\n          method: POST\n",
+    "serviceRawFile": "# \"org\" ensures this Service is used with the correct Serverless Framework Access Key.\norg: dylanr96\n# \"app\" enables Serverless Framework Dashboard features and sharing them with other Services.\napp: event-manager\n# \"service\" is the name of this project. This will also be added to your AWS resource names.\nservice: event-manager\n\nprovider:\n  name: aws\n  runtime: nodejs20.x\n  region: eu-north-1\n  iam:\n    role: arn:aws:iam::992382623759:role/studies-role\n\nfunctions:\n  getEvents:\n    handler: functions/getEvents.handler\n    events:\n      - httpApi:\n          path: \"/events\"\n          method: GET\n  buyEvent:\n    handler: functions/buyTicket.handler\n    events:\n      - httpApi:\n          path: \"/events/{id}\"\n          method: POST\nresources:\n  Resources:\n    eventsDb:\n      Type: AWS::DynamoDB::Table\n      Properties:\n        TableName: Event\n        AttributeDefinitions:\n          - AttributeName: id\n            AttributeType: S\n        KeySchema:\n          - AttributeName: id\n            KeyType: HASH\n        BillingMode: PAY_PER_REQUEST\n",
     "command": [
       "deploy"
     ],
@@ -566,12 +609,12 @@
     "integrations": {},
     "serviceProviderAwsCfStackId": "arn:aws:cloudformation:eu-north-1:992382623759:stack/event-manager-dev/d99e82a0-6450-11ef-8647-06eadcc4c7f5",
     "serviceProviderAwsCfStackCreated": "2024-08-27T08:46:28.348Z",
-    "serviceProviderAwsCfStackUpdated": "2024-08-29T09:13:01.697Z",
+    "serviceProviderAwsCfStackUpdated": "2024-09-04T09:10:05.274Z",
     "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
     "serviceProviderAwsCfStackOutputs": [
       {
         "OutputKey": "BuyEventLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:eu-north-1:992382623759:function:event-manager-dev-buyEvent:15",
+        "OutputValue": "arn:aws:lambda:eu-north-1:992382623759:function:event-manager-dev-buyEvent:35",
         "Description": "Current Lambda function version",
         "ExportName": "sls-event-manager-dev-BuyEventLambdaFunctionQualifiedArn"
       },
@@ -583,7 +626,7 @@
       },
       {
         "OutputKey": "GetEventsLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:eu-north-1:992382623759:function:event-manager-dev-getEvents:25",
+        "OutputValue": "arn:aws:lambda:eu-north-1:992382623759:function:event-manager-dev-getEvents:45",
         "Description": "Current Lambda function version",
         "ExportName": "sls-event-manager-dev-GetEventsLambdaFunctionQualifiedArn"
       },

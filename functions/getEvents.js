@@ -1,16 +1,17 @@
 const { db } = require("../dynamodb");
 
-exports.handler = async (event, context) => {
+module.exports.handler = async (event, context) => {
   try {
-  } catch (error) {}
-  const params = {
-    TableName: "Event",
-  };
+    const result = await db.scan({
+      TableName: "Event",
+    });
 
-  const events = await client.scan(params);
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({ events }),
-  };
-  return response;
+    const response = {
+      statusCode: 200,
+      body: JSON.stringify(result.Items),
+    };
+    return response;
+  } catch (error) {
+    return console.error(error);
+  }
 };

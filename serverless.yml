@@ -10,7 +10,7 @@ provider:
   runtime: nodejs20.x
   region: eu-north-1
   iam:
-    role: 
+    role:
 
 functions:
   getEvents:
@@ -32,9 +32,9 @@ resources:
       Properties:
         TableName: Event
         AttributeDefinitions:
-          -AttributeName: id
-           AttributeType: S
+          - AttributeName: id
+            AttributeType: S
         KeySchema:
-          -AttributeName: id
-           KeyType: HASH
+          - AttributeName: id
+            KeyType: HASH
         BillingMode: PAY_PER_REQUEST

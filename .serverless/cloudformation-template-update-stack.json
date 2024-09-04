@@ -90,7 +90,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/event-manager/dev/1724922781144-2024-08-29T09:13:01.144Z/event-manager.zip"
+          "S3Key": "serverless/event-manager/dev/1725441002059-2024-09-04T09:10:02.059Z/event-manager.zip"
         },
         "Handler": "functions/getEvents.handler",
         "Runtime": "nodejs20.x",
@@ -110,7 +110,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/event-manager/dev/1724922781144-2024-08-29T09:13:01.144Z/event-manager.zip"
+          "S3Key": "serverless/event-manager/dev/1725441002059-2024-09-04T09:10:02.059Z/event-manager.zip"
         },
         "Handler": "functions/buyTicket.handler",
         "Runtime": "nodejs20.x",
@@ -123,24 +123,24 @@
         "BuyEventLogGroup"
       ]
     },
-    "GetEventsLambdaVersion9nhB97wANQDgXpjuPvNMCbGgJ7nhjLt4MtSgrhnKFQ": {
+    "GetEventsLambdaVersion0ytRP7MjbVAxClGBxLKBW6FPSFgcfWvHpW9pLbk": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetEventsLambdaFunction"
         },
-        "CodeSha256": "j+T6WPyR74tRnCpar6/OzqWEAiuv4L3Uhc4z8NCbYSU="
+        "CodeSha256": "dPS6+wL83duwGgok2YSODBJY9qmZA7+1I3wqwfvjrJ0="
       }
     },
-    "BuyEventLambdaVersionYQPCljG2n2CaW3tMKZ8N3LsshJrA7s5ghSejiCrVikQ": {
+    "BuyEventLambdaVersionDMYeD2kgrItuNwM8GM45RUrmOsOkm7L75P2TDg6O0": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "BuyEventLambdaFunction"
         },
-        "CodeSha256": "j+T6WPyR74tRnCpar6/OzqWEAiuv4L3Uhc4z8NCbYSU="
+        "CodeSha256": "dPS6+wL83duwGgok2YSODBJY9qmZA7+1I3wqwfvjrJ0="
       }
     },
     "HttpApi": {
@@ -312,6 +312,25 @@
         }
       },
       "DependsOn": "HttpApiIntegrationBuyEvent"
+    },
+    "eventsDb": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "Event",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST"
+      }
     }
   },
   "Outputs": {
@@ -326,7 +345,7 @@
     "GetEventsLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetEventsLambdaVersion9nhB97wANQDgXpjuPvNMCbGgJ7nhjLt4MtSgrhnKFQ"
+        "Ref": "GetEventsLambdaVersion0ytRP7MjbVAxClGBxLKBW6FPSFgcfWvHpW9pLbk"
       },
       "Export": {
         "Name": "sls-event-manager-dev-GetEventsLambdaFunctionQualifiedArn"
@@ -335,7 +354,7 @@
     "BuyEventLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "BuyEventLambdaVersionYQPCljG2n2CaW3tMKZ8N3LsshJrA7s5ghSejiCrVikQ"
+        "Ref": "BuyEventLambdaVersionDMYeD2kgrItuNwM8GM45RUrmOsOkm7L75P2TDg6O0"
       },
       "Export": {
         "Name": "sls-event-manager-dev-BuyEventLambdaFunctionQualifiedArn"
