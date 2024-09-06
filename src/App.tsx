@@ -1,18 +1,24 @@
+import React from "react";
 import "./App.css";
-import { useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
-function App() {
+interface Props {}
+
+const App = (props: Props) => {
   const navigate = useNavigate();
   return (
     <>
+      <nav>
+        <div>
+          <button onClick={() => navigate("/ticket")}>Ticket</button>
+          <button onClick={() => navigate("/verify")}>Verify</button>
+        </div>
+      </nav>
       <div>
-        <h1>Hello there</h1>
-        <button onClick={() => navigate("/events")}>Events</button>
-        <button onClick={() => navigate("/ticket")}>Ticket</button>
-        <button onClick={() => navigate("/verify")}>Verify</button>
+        <Outlet />
       </div>
     </>
   );
-}
+};
 
 export default App;
