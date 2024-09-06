@@ -98,6 +98,12 @@
               "LogGroupName": "/aws/lambda/event-manager-dev-buyEvent"
             }
           },
+          "LoginLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/event-manager-dev-login"
+            }
+          },
           "GetEventsLambdaFunction": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
@@ -105,7 +111,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/event-manager/dev/1725441002059-2024-09-04T09:10:02.059Z/event-manager.zip"
+                "S3Key": "serverless/event-manager/dev/1725629174328-2024-09-06T13:26:14.328Z/event-manager.zip"
               },
               "Handler": "functions/getEvents.handler",
               "Runtime": "nodejs20.x",
@@ -125,7 +131,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/event-manager/dev/1725441002059-2024-09-04T09:10:02.059Z/event-manager.zip"
+                "S3Key": "serverless/event-manager/dev/1725629174328-2024-09-06T13:26:14.328Z/event-manager.zip"
               },
               "Handler": "functions/buyTicket.handler",
               "Runtime": "nodejs20.x",
@@ -138,24 +144,54 @@
               "BuyEventLogGroup"
             ]
           },
-          "GetEventsLambdaVersion0ytRP7MjbVAxClGBxLKBW6FPSFgcfWvHpW9pLbk": {
+          "LoginLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/event-manager/dev/1725629174328-2024-09-06T13:26:14.328Z/event-manager.zip"
+              },
+              "Handler": "functions/login.handler",
+              "Runtime": "nodejs20.x",
+              "FunctionName": "event-manager-dev-login",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Role": "arn:aws:iam::992382623759:role/studies-role"
+            },
+            "DependsOn": [
+              "LoginLogGroup"
+            ]
+          },
+          "GetEventsLambdaVersion1YlypdO798pgtolvO7nOBDjt7KsGZw5iJgh19w6Vos": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetEventsLambdaFunction"
               },
-              "CodeSha256": "dPS6+wL83duwGgok2YSODBJY9qmZA7+1I3wqwfvjrJ0="
+              "CodeSha256": "IECxi2gEuhp6+mRXRjMTqNBhFZPPWRbIgRVCDtJpQEc="
             }
           },
-          "BuyEventLambdaVersionDMYeD2kgrItuNwM8GM45RUrmOsOkm7L75P2TDg6O0": {
+          "BuyEventLambdaVersion5X8VlBsDwIsXGIPMxPS5NfxX8oTNC6ztZe8gvrDtexk": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "BuyEventLambdaFunction"
               },
-              "CodeSha256": "dPS6+wL83duwGgok2YSODBJY9qmZA7+1I3wqwfvjrJ0="
+              "CodeSha256": "IECxi2gEuhp6+mRXRjMTqNBhFZPPWRbIgRVCDtJpQEc="
+            }
+          },
+          "LoginLambdaVersion2DYrNDDgJtpIqBGyuF8G4eeyoz7A73wUaGEbZpsVoo": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "LoginLambdaFunction"
+              },
+              "CodeSha256": "IECxi2gEuhp6+mRXRjMTqNBhFZPPWRbIgRVCDtJpQEc="
             }
           },
           "HttpApi": {
@@ -301,13 +337,13 @@
               "TimeoutInMillis": 30000
             }
           },
-          "HttpApiRoutePostEventsIdVar": {
+          "HttpApiRoutePostBuyevent": {
             "Type": "AWS::ApiGatewayV2::Route",
             "Properties": {
               "ApiId": {
                 "Ref": "HttpApi"
               },
-              "RouteKey": "POST /events/{id}",
+              "RouteKey": "POST /buyEvent",
               "Target": {
                 "Fn::Join": [
                   "/",
@@ -321,6 +357,78 @@
               }
             },
             "DependsOn": "HttpApiIntegrationBuyEvent"
+          },
+          "LoginLambdaPermissionHttpApi": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "LoginLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "HttpApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "HttpApiIntegrationLogin": {
+            "Type": "AWS::ApiGatewayV2::Integration",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "IntegrationType": "AWS_PROXY",
+              "IntegrationUri": {
+                "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"LoginLambdaPermissionHttpApi\"][\"Properties\"][\"FunctionName\"]"
+              },
+              "PayloadFormatVersion": "2.0",
+              "TimeoutInMillis": 30000
+            }
+          },
+          "HttpApiRoutePostEventLogin": {
+            "Type": "AWS::ApiGatewayV2::Route",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "RouteKey": "POST /event/login",
+              "Target": {
+                "Fn::Join": [
+                  "/",
+                  [
+                    "integrations",
+                    {
+                      "Ref": "HttpApiIntegrationLogin"
+                    }
+                  ]
+                ]
+              }
+            },
+            "DependsOn": "HttpApiIntegrationLogin"
           },
           "eventsDb": {
             "Type": "AWS::DynamoDB::Table",
@@ -354,7 +462,7 @@
           "GetEventsLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetEventsLambdaVersion0ytRP7MjbVAxClGBxLKBW6FPSFgcfWvHpW9pLbk"
+              "Ref": "GetEventsLambdaVersion1YlypdO798pgtolvO7nOBDjt7KsGZw5iJgh19w6Vos"
             },
             "Export": {
               "Name": "sls-event-manager-dev-GetEventsLambdaFunctionQualifiedArn"
@@ -363,10 +471,19 @@
           "BuyEventLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "BuyEventLambdaVersionDMYeD2kgrItuNwM8GM45RUrmOsOkm7L75P2TDg6O0"
+              "Ref": "BuyEventLambdaVersion5X8VlBsDwIsXGIPMxPS5NfxX8oTNC6ztZe8gvrDtexk"
             },
             "Export": {
               "Name": "sls-event-manager-dev-BuyEventLambdaFunctionQualifiedArn"
+            }
+          },
+          "LoginLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "LoginLambdaVersion2DYrNDDgJtpIqBGyuF8G4eeyoz7A73wUaGEbZpsVoo"
+            },
+            "Export": {
+              "Name": "sls-event-manager-dev-LoginLambdaFunctionQualifiedArn"
             }
           },
           "HttpApiId": {
@@ -509,18 +626,18 @@
         "timeout": 6,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "GetEventsLambdaVersion0ytRP7MjbVAxClGBxLKBW6FPSFgcfWvHpW9pLbk"
+        "versionLogicalId": "GetEventsLambdaVersion1YlypdO798pgtolvO7nOBDjt7KsGZw5iJgh19w6Vos"
       },
       "buyEvent": {
         "handler": "functions/buyTicket.handler",
         "events": [
           {
             "httpApi": {
-              "path": "/events/{id}",
+              "path": "/buyEvent",
               "method": "POST"
             },
             "resolvedMethod": "POST",
-            "resolvedPath": "/events/{id}"
+            "resolvedPath": "/buyEvent"
           }
         ],
         "name": "event-manager-dev-buyEvent",
@@ -529,7 +646,27 @@
         "timeout": 6,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "BuyEventLambdaVersionDMYeD2kgrItuNwM8GM45RUrmOsOkm7L75P2TDg6O0"
+        "versionLogicalId": "BuyEventLambdaVersion5X8VlBsDwIsXGIPMxPS5NfxX8oTNC6ztZe8gvrDtexk"
+      },
+      "login": {
+        "handler": "functions/login.handler",
+        "events": [
+          {
+            "httpApi": {
+              "path": "/event/login",
+              "method": "POST"
+            },
+            "resolvedMethod": "POST",
+            "resolvedPath": "/event/login"
+          }
+        ],
+        "name": "event-manager-dev-login",
+        "package": {},
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs20.x",
+        "vpc": {},
+        "versionLogicalId": "LoginLambdaVersion2DYrNDDgJtpIqBGyuF8G4eeyoz7A73wUaGEbZpsVoo"
       }
     },
     "resources": {
@@ -580,7 +717,7 @@
     "artifact": "C:\\Users\\aintf\\event-manager\\.serverless\\event-manager.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/event-manager/dev/1725441002059-2024-09-04T09:10:02.059Z",
+    "artifactDirectoryName": "serverless/event-manager/dev/1725629174328-2024-09-06T13:26:14.328Z",
     "artifact": "event-manager.zip"
   }
 }

@@ -8,7 +8,7 @@ module.exports.handler = async (event, context) => {
 
     const response = {
       statusCode: 200,
-      body: JSON.stringify(result.Items),
+      body: JSON.stringify({ message: result.Items }),
     };
     return response;
   } catch (error) {

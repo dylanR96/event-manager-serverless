@@ -23,7 +23,13 @@ functions:
     handler: functions/buyTicket.handler
     events:
       - httpApi:
-          path: "/events/{id}"
+          path: "/buyEvent"
+          method: POST
+  login:
+    handler: functions/login.handler
+    events:
+      - httpApi:
+          path: "/event/login"
           method: POST
 resources:
   Resources:
