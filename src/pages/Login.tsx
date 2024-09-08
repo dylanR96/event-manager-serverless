@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Login.css";
 import Frame from "../svgs/Frame.tsx";
-import { Link } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router";
 
 interface LoginForm {
   username: string;
@@ -14,6 +14,8 @@ const Login = () => {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -21,7 +23,29 @@ const Login = () => {
 
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("success");
+    try {
+      const response = await fetch(
+        "https://8vzihxkfu5.execute-api.eu-north-1.amazonaws.com/event/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      const data: Response = await response.json();
+
+      if (response.ok) {
+        console.log(data);
+        navigate("/ticket");
+      } else {
+        console.log("Response threw an error");
+      }
+    } catch (error) {
+      console.error("Error finding user", error);
+    }
   };
   return (
     <>
@@ -55,6 +79,7 @@ const Login = () => {
           </form>
         </div>
       </div>
+      <Outlet />
     </>
   );
 };

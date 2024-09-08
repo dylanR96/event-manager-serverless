@@ -7,11 +7,10 @@ module.exports.handler = async (event, context) => {
       TableName: "User",
       Key: {
         Username: username,
-        Password: password,
       },
     });
 
-    if (result.Item) {
+    if (result.Item && result.Item.Password === password) {
       const response = {
         statusCode: 200,
         body: JSON.stringify({ message: `Welcome ${result.Item.Username}!` }),
@@ -19,7 +18,7 @@ module.exports.handler = async (event, context) => {
       return response;
     } else {
       const response = {
-        statusCode: 200,
+        statusCode: 401,
         body: JSON.stringify({ message: "Username not found!" }),
       };
       return response;

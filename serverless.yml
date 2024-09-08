@@ -11,6 +11,8 @@ provider:
   region: eu-north-1
   iam:
     role:
+  httpApi:
+    cors: true
 
 functions:
   getEvents:
