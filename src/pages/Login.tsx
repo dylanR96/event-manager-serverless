@@ -39,7 +39,7 @@ const Login = () => {
 
       if (response.ok) {
         console.log(data);
-        navigate("/ticket");
+        navigate("/app/ticket");
       } else {
         console.log("Response threw an error");
       }
@@ -50,6 +50,7 @@ const Login = () => {
   return (
     <>
       <div className="main">
+        <Outlet />
         <div className="main__logo">
           <Frame />
           <h2>Where It's @</h2>
