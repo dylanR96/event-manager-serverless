@@ -39,7 +39,7 @@ const Login = () => {
 
       if (response.ok) {
         console.log(data);
-        navigate("/app/ticket");
+        navigate("/app/events");
       } else {
         console.log("Response threw an error");
       }

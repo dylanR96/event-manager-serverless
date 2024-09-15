@@ -1,6 +1,6 @@
-const { db } = require("../dynamodb");
+import { db } from "../dynamodb";
 
-module.exports.handler = async (event, context) => {
+export default handler = async (event, context) => {
   const { username, password } = JSON.parse(event.body);
   try {
     const result = await db.get({
@@ -18,7 +18,7 @@ module.exports.handler = async (event, context) => {
       return response;
     } else {
       const response = {
-        statusCode: 401,
+        statusCode: 400,
         body: JSON.stringify({ message: "Username not found!" }),
       };
       return response;

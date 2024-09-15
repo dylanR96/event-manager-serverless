@@ -1,6 +1,6 @@
-const { db } = require("../dynamodb");
+import { db } from "../dynamodb";
 
-module.exports.handler = async (event, context) => {
+export default handler = async (event, context) => {
   const { id } = JSON.parse(event.body);
 
   try {

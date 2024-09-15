@@ -1,6 +1,6 @@
-const { db } = require("../dynamodb");
+import { db } from "../dynamodb";
 
-module.exports.handler = async (event, context) => {
+export default handler = async (event, context) => {
   try {
     const result = await db.scan({
       TableName: "Event",
