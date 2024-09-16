@@ -1,4 +1,5 @@
-import { db } from "../dynamodb";
+import { db } from "../../dynamodb";
+import { loginSchema } from "../schemas/LoginSchema";
 
 export default handler = async (event, context) => {
   const { username, password } = JSON.parse(event.body);
