@@ -1,0 +1,84 @@
+@media only screen and (max-width: 600px) {
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    font-size: 10px;
+  }
+  .main {
+    height: 100svh;
+    background-color: #231f42;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+  }
+
+  .main__header-wrapper {
+  }
+
+  .main__events {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .event-dates-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .main__events-header {
+    color: #f56b9a;
+  }
+
+  .main__event-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .event-dates {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid white;
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .event-artist {
+  }
+
+  .event-location {
+  }
+
+  .main__event-info {
+  }
+
+  .main__header-wrapper {
+  }
+
+  .main__events-header {
+  }
+
+  .main__event-info {
+  }
+
+  .first-event__header {
+  }
+
+  .event-artist {
+  }
+
+  .event-location {
+  }
+
+  .main__event-info {
+  }
+}
