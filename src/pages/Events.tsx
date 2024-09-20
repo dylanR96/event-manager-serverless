@@ -1,8 +1,16 @@
 import "./events.css";
 import { useNavigate } from "react-router";
+import { useContext } from "react";
+import { TicketContext } from "../provider/myProvider";
 
 const Events = () => {
   const navigate = useNavigate();
+  const context = useContext(TicketContext);
+  if (!context) {
+    throw new Error("Events must be used within a myProvider");
+  }
+  const { value, setValue } = context;
+
   return (
     <>
       <div className="main">
@@ -38,7 +46,14 @@ const Events = () => {
                   <h4>350 sek</h4>
                 </div>
                 <div>
-                  <button onClick={() => navigate("/app/ticket")}>Buy</button>
+                  <button
+                    onClick={() => {
+                      navigate("/app/ticket");
+                      setValue("Lasse");
+                    }}
+                  >
+                    Buy
+                  </button>
                 </div>
               </div>
             </div>
@@ -51,7 +66,14 @@ const Events = () => {
                   <h4>110 sek</h4>
                 </div>
                 <div>
-                  <button onClick={() => navigate("/app/ticket")}>Buy</button>
+                  <button
+                    onClick={() => {
+                      navigate("/app/ticket");
+                      setValue("Pelle");
+                    }}
+                  >
+                    Buy
+                  </button>
                 </div>
               </div>
             </div>
@@ -64,7 +86,14 @@ const Events = () => {
                   <h4>99 sek</h4>
                 </div>
                 <div>
-                  <button onClick={() => navigate("/app/ticket")}>Buy</button>
+                  <button
+                    onClick={() => {
+                      navigate("/app/ticket");
+                      setValue("Kajsa");
+                    }}
+                  >
+                    Buy
+                  </button>
                 </div>
               </div>
             </div>
@@ -77,7 +106,14 @@ const Events = () => {
                   <h4>150 sek</h4>
                 </div>
                 <div>
-                  <button onClick={() => navigate("/app/ticket")}>Buy</button>
+                  <button
+                    onClick={() => {
+                      navigate("/app/ticket");
+                      setValue("Klubb");
+                    }}
+                  >
+                    Buy
+                  </button>
                 </div>
               </div>
             </div>
