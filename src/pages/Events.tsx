@@ -1,7 +1,8 @@
-import React from "react";
 import "./events.css";
+import { useNavigate } from "react-router";
 
 const Events = () => {
+  const navigate = useNavigate();
   return (
     <>
       <div className="main">
@@ -36,6 +37,9 @@ const Events = () => {
                   <h4>19.00 - 21.00</h4>
                   <h4>350 sek</h4>
                 </div>
+                <div>
+                  <button onClick={() => navigate("/app/ticket")}>Buy</button>
+                </div>
               </div>
             </div>
             <div className="main__event-info">
@@ -45,6 +49,9 @@ const Events = () => {
                 <div>
                   <h4>22.00 - 00.00</h4>
                   <h4>110 sek</h4>
+                </div>
+                <div>
+                  <button onClick={() => navigate("/app/ticket")}>Buy</button>
                 </div>
               </div>
             </div>
@@ -56,6 +63,9 @@ const Events = () => {
                   <h4>15.00 - 16.00</h4>
                   <h4>99 sek</h4>
                 </div>
+                <div>
+                  <button onClick={() => navigate("/app/ticket")}>Buy</button>
+                </div>
               </div>
             </div>
             <div className="main__event-info">
@@ -65,6 +75,9 @@ const Events = () => {
                 <div>
                   <h4>22.00 - du tröttnar</h4>
                   <h4>150 sek</h4>
+                </div>
+                <div>
+                  <button onClick={() => navigate("/app/ticket")}>Buy</button>
                 </div>
               </div>
             </div>

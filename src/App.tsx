@@ -1,10 +1,7 @@
-import React from "react";
 import "./App.css";
 import { Outlet } from "react-router-dom";
 
-interface Props {}
-
-const App = (props: Props) => {
+const App = () => {
   return (
     <>
       <Outlet />

@@ -1,7 +1,4 @@
-import React from "react";
-
-type Props = {};
-const Frame = (props: Props) => {
+const Frame = () => {
   return (
     <svg
       width="70"

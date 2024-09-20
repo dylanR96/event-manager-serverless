@@ -1,8 +1,4 @@
-import React from "react";
-
-interface Props {}
-
-const Verify = (props: Props) => {
+const Verify = () => {
   return <div>Verify</div>;
 };
 
